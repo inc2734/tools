@@ -1,9 +1,37 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-200;
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-900);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 200ms;
   }
+
+  .dark body {
+    background-color: var(--color-gray-900);
+    color: var(--color-gray-100);
+  }
+}
+
+/* Glassmorphism utilities */
+@layer utilities {
+  .glass {
+    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-sm transition-all duration-300;
+  }
+
+  .glass-card {
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/40 dark:border-gray-700/60 shadow-[0_8px_30px_rgb(0, 0, 0, 0.04)] dark:shadow-[0_8px_30px_rgb(0, 0, 0, 0.2)] transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.08)] dark:hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.4)];
+  }
+}
+
+/* Custom background pattern */
+.bg-pattern {
+  background-image: radial-gradient(var(--color-gray-200) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.dark .bg-pattern {
+  background-image: radial-gradient(var(--color-gray-800) 1px, transparent 1px);
 }

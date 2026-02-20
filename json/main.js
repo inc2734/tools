@@ -29,16 +29,14 @@ function formatJSON() {
 }
 
 function showError(msg) {
-    errorMessage.textContent = msg;
-    errorMessage.classList.remove('opacity-0');
-    outputContainer.classList.add('border-red-300', 'dark:border-red-800');
-    outputContainer.classList.remove('border-gray-200', 'dark:border-gray-700');
+    document.getElementById('error-text').textContent = msg;
+    errorMessage.classList.remove('opacity-0', '-translate-y-2');
+    outputContainer.classList.add('border-rose-300', 'dark:border-rose-800');
 }
 
 function hideError() {
-    errorMessage.classList.add('opacity-0');
-    outputContainer.classList.remove('border-red-300', 'dark:border-red-800');
-    outputContainer.classList.add('border-gray-200', 'dark:border-gray-700');
+    errorMessage.classList.add('opacity-0', '-translate-y-2');
+    outputContainer.classList.remove('border-rose-300', 'dark:border-rose-800');
 }
 
 // Add debounce to not freeze on large text pastes
