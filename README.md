@@ -20,6 +20,7 @@ UIにはTailwind CSS v4を使用したモダンなグラスモーフィズムデ
 
 - **[Unicode 文字変換 (unicode/)](./unicode/README.md)**: `\uXXXX` 形式のUnicodeエスケープシーケンスを通常の文字にデコードして表示します。
 - **[JSON 整形 (json/)](./json/README.md)**: 未フォーマットのJSONデータを読みやすく整形インデントし、構文エラーを検証します。
+- **[Prettier 整形 (prettier/)](./prettier/README.md)**: HTML, CSS, JavaScript, PHP コードをリアルタイムで読みやすい形式に自動フォーマットします。
 
 ## ローカルでの開発・実行手順
 

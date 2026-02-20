@@ -4,7 +4,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JSON 整形 | Tools</title>
+    <title>Prettier 整形 | Tools</title>
+
+    <!-- CodeMirror 6 (for line numbers & horizontal scroll) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+
+    <!-- CodeMirror Modes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/php/php.min.js"></script>
+
+    <!-- Prettier & Plugins -->
+    <script src="https://unpkg.com/prettier@3.2.5/standalone.js"></script>
+    <script src="https://unpkg.com/@prettier/plugin-php@0.22.2/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/html.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/postcss.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/estree.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/babel.js"></script>
+
     <link rel="stylesheet" href="../style.css" />
 </head>
 
@@ -24,12 +45,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                     </svg>
-                    JSON 整形
+                    Prettier 整形
                 </h2>
             </div>
             <div class="flex items-center space-x-4">
                 <a href="../"
-                    class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-xl text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 dark:focus:ring-offset-gray-900 transition-all">
+                    class="inline-flex items-center px-3 py-2 border border-gray-300 dark:border-gray-600 shadow-sm text-sm leading-4 font-medium rounded-xl text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-900 transition-all">
                     <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -48,28 +69,44 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
                     </svg>
-                    JSON 整形
+                    Prettier 整形
                 </h2>
                 <p class="text-gray-600 dark:text-gray-400">
-                    左側にJSON文字列を貼り付けると、右側にきれいにフォーマットされたJSONが表示されます。
+                    HTML / CSS / JavaScript / PHP を整形します。左のエリアにコードを貼り付けてください。
                 </p>
             </div>
 
-            <div
-                class="flex items-center space-x-3 bg-white/60 dark:bg-gray-800/60 p-1.5 rounded-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
-                <label class="text-sm font-medium text-gray-600 dark:text-gray-400 pl-2">インデント:</label>
-                <select id="indent-select"
-                    class="bg-white dark:bg-gray-700 border-none text-gray-900 dark:text-white text-sm rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm cursor-pointer appearance-none">
-                    <option value="2">2スペース</option>
-                    <option value="4">4スペース</option>
-                    <option value="tab">タブ</option>
-                </select>
+            <div class="w-full sm:w-auto flex flex-wrap justify-end gap-3 items-center sm:ml-auto">
+                <!-- 言語選択 -->
+                <div
+                    class="flex items-center space-x-3 bg-white/60 dark:bg-gray-800/60 p-1.5 rounded-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400 pl-2">言語:</label>
+                    <select id="languageSelect"
+                        class="bg-white dark:bg-gray-700 border-none text-gray-900 dark:text-white text-sm rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm cursor-pointer appearance-none">
+                        <option value="html">HTML</option>
+                        <option value="css">CSS</option>
+                        <option value="javascript">JavaScript</option>
+                        <option value="php">PHP</option>
+                    </select>
+                </div>
+
+                <!-- インデント選択 -->
+                <div
+                    class="flex items-center space-x-3 bg-white/60 dark:bg-gray-800/60 p-1.5 rounded-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm">
+                    <label class="text-sm font-medium text-gray-600 dark:text-gray-400 pl-2">インデント:</label>
+                    <select id="indent-select"
+                        class="bg-white dark:bg-gray-700 border-none text-gray-900 dark:text-white text-sm rounded-lg py-1.5 pl-3 pr-8 focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm cursor-pointer appearance-none">
+                        <option value="2spaces">2スペース</option>
+                        <option value="4spaces">4スペース</option>
+                        <option value="tab" selected>タブ</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="w-full mb-3 h-6 flex items-center">
+        <div class="w-full mb-3 min-h-[24px] flex items-center">
             <span id="error-message"
-                class="text-sm text-rose-500 dark:text-rose-400 font-medium transition-all duration-300 opacity-0 bg-rose-50 dark:bg-rose-900/30 px-3 py-1 rounded-full border border-rose-200 dark:border-rose-800/50 shadow-sm flex items-center">
+                class="text-sm text-rose-500 dark:text-rose-400 font-medium transition-all duration-300 opacity-0 bg-rose-50 dark:bg-rose-900/30 px-3 py-1 rounded-full border border-rose-200 dark:border-rose-800/50 shadow-sm flex items-center hidden">
                 <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
@@ -79,26 +116,26 @@
             </span>
         </div>
 
-        <div class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6 min-h-[450px]">
+        <div class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6 min-h-[500px]">
             <!-- Input Layer -->
             <div
-                class="flex flex-col h-full glass rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+                class="flex flex-col h-full glass rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
                 <div
                     class="bg-gray-100/50 dark:bg-gray-800/50 px-5 py-3 border-b border-gray-200/50 dark:border-gray-700/50 flex justify-between items-center backdrop-blur-sm">
                     <h3 class="font-medium text-gray-700 dark:text-gray-300 flex items-center">
-                        <span class="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span> 入力 (未整形 JSON)
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span> 入力コード
                     </h3>
                     <button id="clear-btn"
                         class="text-xs font-medium text-gray-500 hover:text-rose-600 dark:text-gray-400 dark:hover:text-rose-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-200/50 dark:hover:bg-gray-700/50">クリア</button>
                 </div>
-                <textarea id="input-text"
-                    class="flex-grow w-full p-5 bg-transparent text-gray-900 dark:text-gray-100 resize-none focus:outline-none font-mono text-sm leading-relaxed placeholder-gray-400 dark:placeholder-gray-500 whitespace-pre"
-                    spellcheck="false"></textarea>
+                <div id="input-editor-container" class="flex-grow w-full relative">
+                    <textarea id="inputCode" class="hidden"></textarea>
+                </div>
             </div>
 
             <!-- Output Layer -->
-            <div id="output-container"
-                class="flex flex-col h-full glass rounded-2xl overflow-hidden relative transition-colors duration-300 border-2 border-transparent">
+            <div
+                class="flex flex-col h-full glass rounded-2xl overflow-hidden relative border border-gray-200/50 dark:border-gray-700/50 shadow-inner drop-shadow-sm">
                 <div
                     class="bg-gray-100/50 dark:bg-gray-800/50 px-5 py-3 border-b border-gray-200/50 dark:border-gray-700/50 flex justify-between items-center backdrop-blur-sm">
                     <h3 class="font-medium text-gray-700 dark:text-gray-300 flex items-center">
@@ -114,13 +151,13 @@
                         コピー
                     </button>
                 </div>
-                <textarea id="output-text"
-                    class="flex-grow w-full p-5 bg-black/5 dark:bg-black/20 text-gray-900 dark:text-gray-100 resize-none focus:outline-none font-mono text-sm leading-relaxed whitespace-pre"
-                    readonly spellcheck="false"></textarea>
+                <div id="output-editor-container" class="flex-grow w-full relative">
+                    <textarea id="outputCode" class="hidden"></textarea>
+                </div>
 
                 <!-- Copy Notification -->
                 <div id="copy-notification"
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900/90 dark:bg-white/90 text-white dark:text-gray-900 px-5 py-2.5 rounded-xl shadow-xl text-sm font-bold opacity-0 transition-all duration-300 pointer-events-none flex items-center backdrop-blur-sm scale-95">
+                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900/90 dark:bg-white/90 text-white dark:text-gray-900 px-5 py-2.5 rounded-xl shadow-xl text-sm font-bold opacity-0 transition-all duration-300 pointer-events-none flex items-center backdrop-blur-sm scale-95 z-50">
                     <svg class="w-4 h-4 mr-2 text-emerald-400 dark:text-emerald-500" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>

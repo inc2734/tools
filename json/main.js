@@ -20,6 +20,7 @@ function formatJSON() {
         let indent = indentSelect.value;
         if (indent === '2') indent = 2;
         else if (indent === '4') indent = 4;
+        else if (indent === 'tab') indent = '\t';
 
         outputText.value = JSON.stringify(parsed, null, indent);
         hideError();

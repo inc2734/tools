@@ -38,3 +38,18 @@
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 }
+
+/* CodeMirror Customization for Prettier Tool */
+@layer components {
+  .dark .CodeMirror-cursor {
+    border-left-color: white !important;
+  }
+
+  div.CodeMirror-lines {
+    padding: .5rem !important;
+  }
+
+  .CodeMirror-linenumber {
+    margin-left: -.5rem;
+  }
+}
