@@ -22,7 +22,20 @@
   }
 
   .glass-card {
-    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/40 dark:border-gray-700/60 shadow-[0_8px_30px_rgb(0, 0, 0, 0.04)] dark:shadow-[0_8px_30px_rgb(0, 0, 0, 0.2)] transition-all duration-500 hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.08)] dark:hover:shadow-[0_8px_30px_rgb(0, 0, 0, 0.4)];
+    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/40 dark:border-gray-700/60 transition-all duration-500;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  }
+
+  .glass-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .dark .glass-card {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  .dark .glass-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
   }
 }
 
