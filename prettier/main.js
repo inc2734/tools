@@ -127,16 +127,29 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             let formattedCode = code;
 
+            // Prettier が無名関数を1行にまとめるのを防ぐための前処理
+            // 文字列リテラル内のマッチを除外しながら、カンマの後の function または fn の前に改行とコメントを挿入
+            const regex = /(['"`])(?:(?!\1)[^\\]|\\.)*\1|,\s*(function\s*\(|fn\s*\()/gi;
+            formattedCode = formattedCode.replace(regex, (match, quote, funcText) => {
+                if (quote) {
+                    return match;
+                }
+                return ',\n// prettier-break\n' + funcText;
+            });
+
             if (lang === 'php') {
-                let hasPhpTag = /^\s*(<\?php|<\?=)/i.test(code);
+                let hasPhpTag = /^\s*(<\?php|<\?=)/i.test(formattedCode);
                 if (!hasPhpTag) {
                     formattedCode = "<?php\n" + formattedCode;
                 }
 
                 formattedCode = await prettier.format(formattedCode, options);
             } else {
-                formattedCode = await prettier.format(code, options);
+                formattedCode = await prettier.format(formattedCode, options);
             }
+
+            // 前処理で挿入したコメントを除去する後処理
+            formattedCode = formattedCode.replace(/\n\s*\/\/\s*prettier-break\n/g, '\n');
 
             outputEditor.setValue(formattedCode);
 
