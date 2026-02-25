@@ -82,7 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function formatCode() {
         const code = inputEditor.getValue();
         if (!code.trim()) {
-            showError('コードを入力してください。');
             return;
         }
 
