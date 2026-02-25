@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
     background-color: var(--color-gray-50);
@@ -41,6 +43,7 @@
 
 /* Button feedback */
 @layer components {
+
   #copy-btn,
   #clear-btn {
     cursor: pointer;

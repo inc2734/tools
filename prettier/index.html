@@ -33,7 +33,7 @@
     class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
     <header
         class="sticky top-0 z-50 bg-white/70 dark:bg-gray-900/70 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 transition-colors">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-6">
                 <h1
                     class="text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">
@@ -170,6 +170,10 @@
             </div>
         </div>
     </main>
+    <script type="module">
+        import { initNav } from '../nav.js';
+        initNav();
+    </script>
     <script type="module" src="./main.js"></script>
 </body>
 
