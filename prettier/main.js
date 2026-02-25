@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function formatCode() {
         const code = inputEditor.getValue();
         if (!code.trim()) {
+            outputEditor.setValue('');
+            hideError();
             return;
         }
 
@@ -161,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     copyBtn.addEventListener('click', () => {
         const formatted = outputEditor.getValue();
-        if (!formatted) return;
 
         navigator.clipboard.writeText(formatted).then(() => {
             const notification = document.getElementById('copy-notification');

@@ -27,7 +27,6 @@ clearBtn.addEventListener('click', () => {
 });
 
 copyBtn.addEventListener('click', () => {
-    if (!outputText.value) return;
     navigator.clipboard.writeText(outputText.value).then(() => {
         copyNotification.classList.remove('opacity-0');
         setTimeout(() => {
