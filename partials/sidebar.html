@@ -1,0 +1,57 @@
+<!-- Sidebar Navigation -->
+<aside id="sidebar-nav" class="fixed top-0 left-0 h-full z-[60]" style="transform: translateX(-100%);">
+    <nav
+        class="h-full flex flex-col bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-r border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
+        <div id="sidebar-header"
+            class="px-3 py-4 border-b border-gray-200/50 dark:border-gray-700/50 flex items-center min-h-[57px]">
+            <button id="sidebar-toggle"
+                class="w-9 h-9 flex items-center justify-center rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors cursor-pointer flex-shrink-0"
+                aria-label="ナビゲーション切り替え">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+            <span id="sidebar-title"
+                class="ml-2 text-lg font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 whitespace-nowrap">Tools</span>
+        </div>
+        <div id="sidebar-links" class="flex-grow py-2 space-y-0.5 overflow-y-auto overflow-x-hidden">
+            {{#each navItems}}
+            <a href="{{../basePath}}{{this.hrefRelative}}"
+                class="flex items-center px-4 py-3 text-sm font-medium {{#if this.isActive}}bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border-l-2 border-indigo-500{{else}}text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-200 border-l-2 border-transparent{{/if}} transition-colors">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24">{{{this.icon}}}</svg>
+                <span class="whitespace-nowrap">{{this.label}}</span>
+            </a>
+            {{/each}}
+        </div>
+    </nav>
+</aside>
+<div id="sidebar-overlay"
+    class="fixed inset-0 bg-black/20 backdrop-blur-[1px] z-[55] opacity-0 pointer-events-none lg:hidden"
+    style="transition: opacity 300ms;"></div>
+<script>
+    (function () {
+        var STORAGE_KEY = 'tools-nav-open';
+        var DESKTOP_BP = 1024;
+        var isDesktop = window.innerWidth >= DESKTOP_BP;
+        var stored = localStorage.getItem(STORAGE_KEY);
+        var open = stored === null ? true : stored === 'true';
+        var sidebar = document.getElementById('sidebar-nav');
+        var overlay = document.getElementById('sidebar-overlay');
+        if (isDesktop) {
+            sidebar.style.width = open ? '14rem' : '3.25rem';
+            sidebar.style.transform = 'translateX(0)';
+            document.body.style.marginLeft = open ? '14rem' : '3.25rem';
+            if (!open) {
+                var links = document.getElementById('sidebar-links');
+                var title = document.getElementById('sidebar-title');
+                if (links) links.style.display = 'none';
+                if (title) title.style.display = 'none';
+            }
+        } else {
+            sidebar.style.transform = 'translateX(-100%)';
+            sidebar.style.width = '14rem';
+        }
+    })();
+</script>
