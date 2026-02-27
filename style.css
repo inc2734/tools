@@ -59,6 +59,13 @@
 
 /* CodeMirror Customization for Prettier Tool */
 @layer components {
+  .CodeMirror {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    inset: 0;
+  }
+
   .dark .CodeMirror-cursor {
     border-left-color: white !important;
   }
