@@ -15,7 +15,8 @@ export default defineConfig({
                 main: resolve(__dirname, 'index.html'),
                 unicode: resolve(__dirname, 'unicode/index.html'),
                 json: resolve(__dirname, 'json/index.html'),
-                prettier: resolve(__dirname, 'prettier/index.html')
+                prettier: resolve(__dirname, 'prettier/index.html'),
+                random: resolve(__dirname, 'random/index.html')
             }
         }
     }
