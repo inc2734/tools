@@ -39,6 +39,12 @@ const navItems = [
         hrefRelative: 'html-preview/',
         icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>',
         id: 'html-preview'
+    },
+    {
+        label: '流体タイポグラフィ',
+        hrefRelative: 'fluid-typography/',
+        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>',
+        id: 'fluid-typography'
     }
 ];
 
@@ -86,7 +92,8 @@ export default defineConfig({
                 json: resolve(__dirname, 'json/index.html'),
                 prettier: resolve(__dirname, 'prettier/index.html'),
                 random: resolve(__dirname, 'random/index.html'),
-                'html-preview': resolve(__dirname, 'html-preview/index.html')
+                'html-preview': resolve(__dirname, 'html-preview/index.html'),
+                'fluid-typography': resolve(__dirname, 'fluid-typography/index.html')
             }
         }
     }

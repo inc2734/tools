@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+
+<head>
+    {{> head}}
+</head>
+
+<body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+    {{> sidebar}}
+    {{> header}}
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 w-full animate-fade-in-up flex flex-col">
+        <div class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white sm:hidden mb-2 flex items-center">
+                <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+                </svg>
+                流体タイポグラフィ
+            </h2>
+            <p class="text-gray-600 dark:text-gray-400">
+                最小・最大ビューポートと文字サイズを指定して、CSSのclamp()関数を使ったfont-sizeを生成します。
+            </p>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-700/50 p-6 md:p-8 mb-8">
+            <form id="fluid-form" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="minViewport" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最小ビューポート (px)</label>
+                        <input type="number" id="minViewport" value="480"
+                            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label for="maxViewport" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最大ビューポート (px)</label>
+                        <input type="number" id="maxViewport" value="1280"
+                            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label for="minFontSize" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最小文字サイズ (px)</label>
+                        <input type="number" id="minFontSize" value="16"
+                            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label for="maxFontSize" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">最大文字サイズ (px)</label>
+                        <input type="number" id="maxFontSize" value="32"
+                            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors dark:text-white outline-none">
+                    </div>
+                    <div>
+                        <label for="baseFontSize" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">基準文字サイズ (px) <span class="text-xs text-gray-500 font-normal">rem変換用</span></label>
+                        <input type="number" id="baseFontSize" value="16"
+                            class="w-full px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors dark:text-white outline-none">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200/50 dark:border-gray-700/50 overflow-hidden relative">
+            <div class="bg-gray-100/50 dark:bg-gray-800/50 px-4 py-3 border-b border-gray-200/50 dark:border-gray-700/50 flex justify-between items-center backdrop-blur-sm">
+                <h3 class="font-medium text-gray-700 dark:text-gray-300 flex items-center">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span> 生成結果
+                </h3>
+                <button id="copy-btn" class="flex items-center text-sm px-3 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 rounded-lg transition-colors border border-indigo-200/50 dark:border-indigo-500/20 cursor-pointer">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>コピー</span>
+                </button>
+            </div>
+            <div class="p-6">
+                <pre class="bg-gray-50 dark:bg-gray-900 p-4 rounded-lg overflow-x-auto border border-gray-200/50 dark:border-gray-700/50"><code id="output" class="text-gray-800 dark:text-gray-200 font-mono text-base leading-relaxed"></code></pre>
+            </div>
+            
+            <!-- トースト通知 -->
+            <div id="toast" class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-800 dark:bg-gray-200 text-white dark:text-gray-900 px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 pointer-events-none text-sm whitespace-nowrap z-50">
+                コピーしました
+            </div>
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <script type="module" src="../nav.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
