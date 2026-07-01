@@ -12,7 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
         lineWrapping: false, // 横スクロールを維持
         viewportMargin: Infinity,
         tabSize: 4,
-        indentWithTabs: true
+        indentWithTabs: true,
+        theme: '3024-night'
     };
 
     const inputEditor = CodeMirror(document.getElementById('input-editor-container'), {
@@ -26,12 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         readOnly: true
     });
 
-    // Dark mode styling for CodeMirror
+    // Dark mode styling for CodeMirror (custom font, height)
     const applyCodeMirrorTheme = () => {
         const wrappers = document.querySelectorAll('.CodeMirror');
         wrappers.forEach(wrapper => {
-            wrapper.style.backgroundColor = 'transparent';
-            wrapper.style.color = '#e2e8f0';
             wrapper.style.height = '100%';
             wrapper.style.minHeight = '400px';
             wrapper.style.fontFamily = "'JetBrains Mono', monospace";
@@ -40,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const gutters = document.querySelectorAll('.CodeMirror-gutters');
         gutters.forEach(gutter => {
-            gutter.style.backgroundColor = 'transparent';
             gutter.style.borderRight = '1px solid #334155';
         });
     };
@@ -147,6 +145,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 formattedCode = await prettier.format(formattedCode, options);
             } else {
                 formattedCode = await prettier.format(formattedCode, options);
+                
+                // HTMLの場合、<style>と<script>の中のインデントを1つ減らす
+                if (lang === 'html') {
+                    const indentStr = indentStyle === 'tab' ? '\t' : (indentStyle === '2spaces' ? '  ' : '    ');
+                    const scriptStyleRegex = /(<(script|style)[^>]*>)([\s\S]*?)(<\/\2>)/gi;
+                    formattedCode = formattedCode.replace(scriptStyleRegex, (match, openTag, tagName, content, closeTag) => {
+                        const unindentedContent = content.split('\n').map(line => {
+                            if (line.startsWith(indentStr)) {
+                                return line.substring(indentStr.length);
+                            }
+                            return line;
+                        }).join('\n');
+                        return openTag + unindentedContent + closeTag;
+                    });
+                }
             }
 
             // 前処理で挿入したコメントを除去する後処理

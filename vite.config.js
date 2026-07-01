@@ -33,6 +33,12 @@ const navItems = [
         hrefRelative: 'random/',
         icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>',
         id: 'random'
+    },
+    {
+        label: 'HTML プレビュー',
+        hrefRelative: 'html-preview/',
+        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>',
+        id: 'html-preview'
     }
 ];
 
@@ -79,7 +85,8 @@ export default defineConfig({
                 unicode: resolve(__dirname, 'unicode/index.html'),
                 json: resolve(__dirname, 'json/index.html'),
                 prettier: resolve(__dirname, 'prettier/index.html'),
-                random: resolve(__dirname, 'random/index.html')
+                random: resolve(__dirname, 'random/index.html'),
+                'html-preview': resolve(__dirname, 'html-preview/index.html')
             }
         }
     }

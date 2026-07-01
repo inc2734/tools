@@ -17,28 +17,8 @@
   }
 }
 
-/* Glassmorphism utilities */
+/* Glassmorphism utilities (removed) */
 @layer utilities {
-  .glass {
-    @apply bg-white/70 dark:bg-gray-800/70 backdrop-blur-md border border-white/20 dark:border-gray-700/50 shadow-sm transition-all duration-300;
-  }
-
-  .glass-card {
-    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl border border-white/40 dark:border-gray-700/60 transition-all duration-500;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-  }
-
-  .glass-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  }
-
-  .dark .glass-card {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  }
-
-  .dark .glass-card:hover {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-  }
 }
 
 /* Button feedback */
@@ -68,10 +48,6 @@
 
   .dark .CodeMirror-cursor {
     border-left-color: white !important;
-  }
-
-  .dark .CodeMirror-linenumber.CodeMirror-gutter-elt {
-    background-color: #1A2332;
   }
 
   div.CodeMirror-lines {

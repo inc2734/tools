@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+
+<head>
+    {{> head}}
+
+    <!-- CodeMirror 6 (for line numbers & horizontal scroll) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/3024-night.min.css">
+
+    <!-- CodeMirror Modes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/htmlmixed/htmlmixed.min.js"></script>
+
+    <!-- Prettier & Plugins -->
+    <script src="https://unpkg.com/prettier@3.2.5/standalone.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/html.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/postcss.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/estree.js"></script>
+    <script src="https://unpkg.com/prettier@3.2.5/plugins/babel.js"></script>
+</head>
+
+<body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 h-[100dvh] overflow-hidden flex flex-col font-sans transition-colors duration-200">
+    {{> sidebar}}
+    {{> header}}
+
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8 w-full flex flex-col min-h-0">
+        <div
+            class="shrink-0 mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white sm:hidden mb-2 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                    </svg>
+                    HTML プレビュー
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400">
+                    HTML/CSS/JS を入力すると即座にプレビューに反映されます。
+                </p>
+            </div>
+
+            <div class="w-full sm:w-auto flex flex-nowrap justify-end gap-3 items-center sm:ml-auto">
+                <!-- レイアウト切り替え -->
+                <div
+                    class="flex items-center bg-white/60 dark:bg-gray-800/60 p-1 rounded-xl border border-gray-200/50 dark:border-gray-700/50 backdrop-blur-sm flex-shrink-0">
+                    <button id="layout-horizontal-btn"
+                        class="p-1.5 rounded-lg bg-white dark:bg-gray-700 shadow-sm text-indigo-500 transition-colors"
+                        title="左右配置">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"></rect>
+                            <line x1="12" y1="3" x2="12" y2="21" stroke-width="2"></line>
+                        </svg>
+                    </button>
+                    <button id="layout-vertical-btn"
+                        class="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors ml-1"
+                        title="上下配置">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" stroke-width="2"></rect>
+                            <line x1="3" y1="12" x2="21" y2="12" stroke-width="2"></line>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="shrink-0 w-full mb-3 flex items-center">
+            {{> error-message}}
+        </div>
+
+        <div id="main-grid"
+            class="flex-grow grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 pb-2 lg:pb-6 min-h-0">
+            <!-- Input Layer -->
+            <div id="input-layer"
+                class="flex flex-col h-full min-h-0 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-indigo-500 border border-gray-200/50 dark:border-gray-700/50 shadow-sm">
+                <div
+                    class="shrink-0 bg-gray-100/50 dark:bg-gray-800/50 px-3 py-2 border-b border-gray-200/50 dark:border-gray-700/50 flex flex-wrap justify-between items-center backdrop-blur-sm gap-2">
+                    <h3 class="font-medium text-gray-700 dark:text-gray-300 flex items-center shrink-0 pl-2">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 mr-2"></span> HTML
+                    </h3>
+
+                    <div class="flex items-center gap-2">
+                        <!-- インデント選択 -->
+                        <div
+                            class="flex items-center space-x-2 bg-white/60 dark:bg-gray-700/60 p-1 rounded-lg border border-gray-200/50 dark:border-gray-600/50">
+                            <select id="indent-select"
+                                class="bg-transparent border-none text-gray-700 dark:text-gray-300 text-xs py-1 pl-2 pr-6 focus:ring-0 outline-none cursor-pointer appearance-none">
+                                <option value="2spaces">2スペース</option>
+                                <option value="4spaces">4スペース</option>
+                                <option value="tab" selected>タブ</option>
+                            </select>
+                        </div>
+
+                        <!-- フォーマットボタン -->
+                        <button id="format-btn"
+                            class="text-xs px-3 py-1.5 bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20 rounded-lg font-medium transition-colors border border-indigo-200/50 dark:border-indigo-500/20 flex items-center">
+                            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                            整形
+                        </button>
+
+                        <div class="h-4 w-px bg-gray-300 dark:bg-gray-600 mx-1"></div>
+
+                        {{> clear-button}}
+                    </div>
+                </div>
+                <div id="input-editor-container" class="flex-grow min-h-0 w-full relative">
+                    <textarea id="inputCode" class="hidden"></textarea>
+                </div>
+            </div>
+
+            <!-- Output Layer -->
+            <div id="output-layer"
+                class="flex flex-col h-full min-h-0 bg-white dark:bg-gray-800 rounded-2xl overflow-hidden relative border border-gray-200/50 dark:border-gray-700/50 shadow-inner drop-shadow-sm bg-white dark:bg-gray-800">
+                <div
+                    class="shrink-0 bg-gray-100/50 dark:bg-gray-800/50 px-3 py-2 border-b border-gray-200/50 dark:border-gray-700/50 flex justify-between items-center backdrop-blur-sm relative z-10">
+                    <h3 class="font-medium text-gray-700 dark:text-gray-300 flex items-center pl-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span> プレビュー
+                    </h3>
+
+                    <!-- レスポンシブ切り替え -->
+                    <div
+                        class="flex items-center bg-white/60 dark:bg-gray-700/60 p-1 rounded-lg border border-gray-200/50 dark:border-gray-600/50">
+                        <button id="size-desktop-btn"
+                            class="p-1.5 rounded-md bg-white dark:bg-gray-600 shadow-sm text-indigo-500 transition-colors"
+                            title="デスクトップ">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button id="size-tablet-btn"
+                            class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mx-1"
+                            title="タブレット">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </button>
+                        <button id="size-mobile-btn"
+                            class="p-1.5 rounded-md text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            title="モバイル">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 18h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Iframe Container for Preview -->
+                <div
+                    class="flex-grow min-h-0 w-full relative flex justify-center bg-gray-50 dark:bg-gray-900 overflow-hidden">
+                    <iframe id="preview-frame"
+                        class="w-full h-full bg-white border-0 transition-all duration-300 ease-in-out shadow-sm"
+                        sandbox="allow-scripts allow-modals"></iframe>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {{> footer}}
+
+    <script type="module" src="../nav.js"></script>
+    <script type="module" src="./main.js"></script>
+</body>
+
+</html>
