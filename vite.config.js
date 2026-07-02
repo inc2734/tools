@@ -45,6 +45,12 @@ const navItems = [
         hrefRelative: 'fluid-typography/',
         icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>',
         id: 'fluid-typography'
+    },
+    {
+        label: 'クリップボードからマークダウンに変換',
+        hrefRelative: 'clipboard-to-markdown/',
+        icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>',
+        id: 'clipboard-to-markdown'
     }
 ];
 
@@ -93,7 +99,8 @@ export default defineConfig({
                 prettier: resolve(__dirname, 'prettier/index.html'),
                 random: resolve(__dirname, 'random/index.html'),
                 'html-preview': resolve(__dirname, 'html-preview/index.html'),
-                'fluid-typography': resolve(__dirname, 'fluid-typography/index.html')
+                'fluid-typography': resolve(__dirname, 'fluid-typography/index.html'),
+                'clipboard-to-markdown': resolve(__dirname, 'clipboard-to-markdown/index.html')
             }
         }
     }
