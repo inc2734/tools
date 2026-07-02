@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const minFontSizeInput = document.getElementById('minFontSize');
     const maxFontSizeInput = document.getElementById('maxFontSize');
     const baseFontSizeInput = document.getElementById('baseFontSize');
-    
+
     const outputElement = document.getElementById('output');
     const copyBtn = document.getElementById('copy-btn');
     const toast = document.getElementById('toast');
@@ -26,14 +26,14 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const formatNumber = (val) => Number(val.toFixed(4));
-        
+        const formatNumber = (val) => Number(val.toFixed(3));
+
         const minFsRem = formatNumber(minFs / baseFs);
         const maxFsRem = formatNumber(maxFs / baseFs);
 
         const slope = (maxFs - minFs) / (maxVw - minVw);
         const slopeVw = formatNumber(slope * 100);
-        
+
         const yIntercept = minFs - (slope * minVw);
         const yInterceptRem = formatNumber(yIntercept / baseFs);
 
@@ -60,13 +60,13 @@ document.addEventListener('DOMContentLoaded', () => {
     copyBtn.addEventListener('click', async () => {
         const textToCopy = outputElement.textContent;
         if (!textToCopy || textToCopy.startsWith('/*')) return;
-        
+
         try {
             await navigator.clipboard.writeText(textToCopy);
             showToast();
         } catch (err) {
             console.error('Failed to copy text: ', err);
-            
+
             // Fallback for older browsers
             const textArea = document.createElement("textarea");
             textArea.value = textToCopy;
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showToast() {
         toast.classList.remove('opacity-0');
         toast.classList.add('opacity-100');
-        
+
         if (toastTimeout) clearTimeout(toastTimeout);
         toastTimeout = setTimeout(() => {
             toast.classList.remove('opacity-100');
